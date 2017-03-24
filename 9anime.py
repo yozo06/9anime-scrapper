@@ -80,8 +80,8 @@ def get_link(link):
             dwnld_link=get_mp4(episode['id'])[qlty]['file']
             dwnld_list.append(dwnld_link)
         except IndexError:
-            qlty=qlty-1
-            print "The chosen quality is unavailable dowloading lower quality..."
+            qlty=0;
+            print "The chosen quality is unavailable dowloading lower quality 360p."
             dwnld_link=get_mp4(episode['id'])[qlty]['file']
             dwnld_list.append(dwnld_link)
             continue
