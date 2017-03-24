@@ -34,7 +34,7 @@ sudo pip install bs4
 sudo pip install requests
 ```
 ```
-sudo pip install logging
+sudo pip install lxml
 ```
 
 ## Authors
