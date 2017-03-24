@@ -2,7 +2,7 @@
 scrape download links of your favourite animes
 
 ## How it works
-GET ALL THE DOWNLOAD LINKS IN dwnld_links.txt. USE IDM(windows),uGet(ubuntu) TO DOWNLOAD THESE BATCH.
+For all the download links check ***dwnld_links.txt*** on your system and use ***IDM***(windows) ,***uGet***(ubuntu) to download this batch.
 
 ## Deployment
 ```
@@ -24,12 +24,19 @@ To download using uget copy the all the content of the txt and just select "New 
 
 ## Prerequisites
 * Python
-* Modules
+* Modules(download and install modules given below)
 ### Installation of modules
 Example:
 ```
 sudo pip install bs4
 ```
+```
+sudo pip install requests
+```
+```
+sudo pip install logging
+```
+
 ## Authors
 
 * **yozo06**
