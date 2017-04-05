@@ -1,6 +1,7 @@
 import logging
 import re
 import sys
+import string
 
 import requests
 from bs4 import BeautifulSoup
@@ -49,14 +50,30 @@ def getAllEpisodes(link,start,end,count):
                         "id": episode['data-id'],
                         "link": episode['href'],
                         "epNumber": episode['data-base'],
+                        "title": data["title"]
                         })
                     count=count-1
-   
             else:
-                i=i+1           
+                i=i+1
     #print data
     return data
 
+
+def append_file(handle, link, episode, qlty):
+
+    if(qlty==0):
+        qltyStr="360p"
+    elif(qlty==1):
+        qltyStr="480p"
+    elif(qlty==2):
+        qltyStr="720p"
+    elif(qlty==3):
+        qltyStr="1080p"
+
+    link += ".type=video/mp4"
+    episodeNumber = string.rjust(episode['epNumber'],3,"0")
+    link += "&title=%s-%s-%s\n" % (episode['title'], episodeNumber, qltyStr)
+    handle.write(link)
 
 def get_link(link):
     dwnld_list=[]
@@ -74,37 +91,20 @@ def get_link(link):
     data=getAllEpisodes(link,start,end,count)
     title=data['title']
     title=str(title)
+    outFile = open("dwnld_links.txt",'w')
 
     for episode in data['episodes']:
         try:
             dwnld_link=get_mp4(episode['id'])[qlty]['file']
-            dwnld_list.append(dwnld_link)
+            append_file(outFile, dwnld_link, episode, qlty)
         except IndexError:
             qlty=0;
             print "The chosen quality is unavailable dowloading lower quality 360p."
             dwnld_link=get_mp4(episode['id'])[qlty]['file']
-            dwnld_list.append(dwnld_link)
+            append_file(outFile, dwnld_link, episode, qlty)
             continue
-    
-    qlty=str(qlty)
-    if(qlty=="0"):
-        qlty="360p"
-    elif(qlty=="1"):
-        qlty="480p"
-    elif(qlty=="2"):
-        qlty="720p"
-    elif(qlty=="3"):
-        qlty="1080p"    
 
-    f = open("dwnld_links.txt",'w')
-    for i in range(0,count):
-        f.write(dwnld_list[i])
-        
-        y=str(i+1)
-        filename=".type=video/mp4&title="+title.replace(" ","_")+"-00"+y+"-"+qlty+"\n"
-        f.write(filename)
-
-    f.close()
+    outFile.close()
 
 
 url=raw_input("Enter the url of the anime (ex:http://9anime.to/watch/masamune-kun-no-revenge.pyr9):")
